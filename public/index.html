@@ -2,40 +2,107 @@
 <html>
 <head>
 	<title>Formide - Featured Items</title>
-
+	<!-- CSS -->
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+	<link rel="stylesheet" href="/lib/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
 	<!-- JS -->
-	<script type="text/javascript" src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular.js"></script>
+	<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
+	<script type="text/javascript" src="/lib/jquery-3.0.0.min.js"></script>
+	<script src="/lib/bootstrap.min.js"></script>
+	<script src="/lib/angular.min.js"></script>
+	<script src="/lib/angular-ui-router.js"></script>
+	
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular.js"></script>
+	UI-Router
+	<script src="https://angular-ui.github.io/ui-router/release/angular-ui-router.js"></script> -->
 </head>
-<body ng-app="featuredItems" ng-controller="MainCtrl">
+<body ng-app="featuredItems" ng-controller="MainCtrl" ng-init="initFirst()" class="container-fluid">
 	<!-- NAVBAR -->
-	<nav role="navigation" class="teal lighten-2">
-	    <div class="nav-wrapper container row hide-on-med-and-down">
-    		<a href='/'><h3 class="titlelogo left">formide</span></h3></a>
-	      	<ul class="right hide-on-med-and-down">
-	        	<li><a href="/search" target="_self">Search</a></li>
-	        	<!-- Dropdown Trigger -->
-	        	<li><a class='dropdown-button' href='#' data-activates='dropdown1'>Account</a></li>
-		        	<!-- Dropdown Structure -->
-				  	<ul id='dropdown1' class='dropdown-content'>
-					    <li><a href="/register">Register</a></li>
-					    <li class="divider"></li>
-					    <li><a href="/login">Login</a></li>
-					    <li class="divider"></li>
-					    <li><a href="/logout">Logout</a></li>
-					    <li class="divider"></li>
-					    <li><a href="/profile">Profile</a></li>
-				  	</ul>
-	      	</ul>
-	      	<ul id="nav-mobile" class="side-nav red lighten-2">
-		        <li><a href="/" target="_self">Search</a></li>
-				<li><a href="/register" class="navlink" >Register</a></li>
-				<li><a href="/login" class="navlink" >Login</a></li>
-				<li><a href="/logout" class="navlink" target="_self" >Logout</a></li>
-				<li><a href="/profile" class="navlink" >Profile</a></li>
-	      	</ul>
-	      	<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-	    </div>
-  	</nav>
+	<nav class="row">
+		<ul class="nav nav-tabs">
+			<li ng-class="{active: isSet(1)}">
+				<a href ng-click="setTab(1)">Active</a>
+			</li>
+			<li ng-class="{active: isSet(2)}">
+				<a href ng-click="setTab(2)">Previous</a>
+			</li>
+			<li ng-class="{active: isSet(3)}">
+				<a href ng-click="setTab(3)">Add</a>
+			</li>
+			<li ng-class="{active: isSet(4)}">
+				<a href ng-click="setTab(4)">Edit</a>
+			</li>
+		</ul>
+	</nav>
+
+	<!-- FEATURED ITEMS PAGE -->
+	<div class="featuredItems" ng-show="isSet(1)">
+		<h3>Featured Items</h3>
+		<div ng-repeat="featuredItem in featuredItems" class="col-md-4">
+			<ul>
+				<li>Name: {{featuredItem.name}}</li>
+				<li>Username: {{featuredItem.username}}</li>
+				<li>Images: 
+					<img ng-src="{{featuredItem.images[0]}}">
+				</li>
+				<li>Publish Date: {{featuredItem.publishDate | date}}</li>
+				<li>Type: {{featuredItem.type}}</li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- ADD FEATURED ITEM -->
+	<div class="addItem col-sm-12 col-md-8" ng-show="isSet(3)">
+		<h3>Add Featured Item</h3>
+		<form>
+			<div class="form-inline">
+				<label for="name">Name</label>
+				<input type="text" class="form-control" placeholder="Name", ng-model="name">
+			</div>
+			<div class="form-inline">
+				<label for="username">Username</label>
+				<input type="text" class="form-control" placeholder="Username", ng-model="username">
+			</div>
+			<div class="form-inline">
+				<label for="name">Profile Image</label>
+				<input type="text" class="form-control" placeholder="Profile Image URL", ng-model="profileImg">
+			</div>
+			<div class="form-inline">
+				<label for="name">Publish Date</label>
+				<input type="date" class="form-control" placeholder="Publish Date", ng-model="publishDate">
+			</div>
+			<div class="form-inline">
+				<label for="name">Images</label>
+				<input type="text" class="form-control" placeholder="Image URL", ng-model="singleImage">
+				<button class="btn" ng-click="addImage()">Add</button>
+				<div ng-repeat="image in images">
+					<img ng-src="{{image}}">
+				</div>
+				
+			</div>
+			<div class="form-inline">
+				<label for="name">Tags</label>
+				<input type="text" class="form-control" placeholder="Tags", ng-model="tag">
+				<button class="btn" ng-click="addTag()">Add</button>
+				<p id="tags" ng-repeat="tag in tags">{{tag}}</p>
+			</div>
+			<div class="form-inline">
+				<label>Type</label>
+				<select ng-model="type">
+					<option value="app">App</option>
+					<option value="account">Account</option>
+					<option value="modelfile">Modelfile</option>
+				</select>
+			</div>
+			<button class="btn btn-primary" type="submit" ng-click="addItem()">Submit</button>
+		</form>
+	</div>
+
+	<!-- <div ui-view></div> -->
+
+	<script src="/javascripts/app.js"></script>
+	<script src="/javascripts/controllers/MainCtrl.js"></script>
 </body>
 </html>

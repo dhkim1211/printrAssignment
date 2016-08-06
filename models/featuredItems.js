@@ -7,10 +7,9 @@ var featuredSchema = new Schema({
     profileImg: String,
     images: Array,
     publishDate: Date,
-    tags: String,
+    tags: Array,
     active: Boolean,
     type: String,
-    description: String,
     createdAt: Date,
     updatedAt: Date
 });
@@ -30,6 +29,6 @@ featuredSchema.pre('save', function(next) {
     next();
 });
 
-var Featured = mongoose.model('Items', featuredSchema);
+var Featured = mongoose.model('Featured', featuredSchema);
 
 module.exports = Featured;

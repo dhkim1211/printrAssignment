@@ -25,19 +25,20 @@ router.get('/v1/prevfeatured', function(req, res) {
 });
 
 //ADD NEW FEATURED ITEM
-router.post('/v1/featured', function(req, res) {
+router.post('/v1/featured/', function(req, res) {
+	console.log(req.body);
 	var Featured = require('../models/featuredItems.js');
 	var newFeatured = new Featured();
 
 	newFeatured.name = req.body.name;
-	newFeatured.username = req.user.username;
-	newFeatured.profileImg = req.user.profileImg;
+	newFeatured.username = req.body.username;
+	newFeatured.profileImg = req.body.profileImg;
 	newFeatured.images = req.body.images;
 	newFeatured.publishDate = req.body.publishDate;
 	newFeatured.tags = req.body.tags;
 	newFeatured.active = true;
 	newFeatured.type = req.body.type;
-	newFeatured.description = req.body.description;
+	console.log(newFeatured);
 	newFeatured.save(function(err){
 		  if (err) {
 		    console.log("Error in Saving Item");
