@@ -6,3 +6,34 @@ body {
 a {
   color: #00B7FF;
 }
+
+img {
+	max-width: 100%;
+}
+
+ul {
+	list-style-type: none;
+}
+
+img.profilePic {
+	max-width: 30px;
+	border-radius: 100%;
+	float: left;
+	margin: 0 15px 10px 15px;
+}
+
+p.user {
+	margin-top: 5px;
+}
+
+.tag {
+	font-style: italic;
+}
+
+.form-inline {
+	margin: 20px;
+}
+
+p span {
+	font-style: italic;
+}

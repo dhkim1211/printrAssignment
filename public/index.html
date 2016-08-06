@@ -18,7 +18,7 @@
 	UI-Router
 	<script src="https://angular-ui.github.io/ui-router/release/angular-ui-router.js"></script> -->
 </head>
-<body ng-app="featuredItems" ng-controller="MainCtrl" ng-init="initFirst()" class="container-fluid">
+<body ng-app="featuredItems" ng-controller="MainCtrl" ng-init="initFirst()" class="container">
 	<!-- NAVBAR -->
 	<nav class="row">
 		<ul class="nav nav-tabs">
@@ -40,16 +40,70 @@
 	<!-- FEATURED ITEMS PAGE -->
 	<div class="featuredItems" ng-show="isSet(1)">
 		<h3>Featured Items</h3>
-		<div ng-repeat="featuredItem in featuredItems" class="col-md-4">
-			<ul>
-				<li>Name: {{featuredItem.name}}</li>
-				<li>Username: {{featuredItem.username}}</li>
-				<li>Images: 
-					<img ng-src="{{featuredItem.images[0]}}">
+		<div class="row">
+			<ul class="nav nav-tabs">
+				<li ng-class="{active: filterSet('')}">
+					<a href ng-click="setFilter('')">All</a>
 				</li>
-				<li>Publish Date: {{featuredItem.publishDate | date}}</li>
-				<li>Type: {{featuredItem.type}}</li>
+				<li ng-class="{active: filterSet('Modelfile')}">
+					<a href ng-click="setFilter('Modelfile')">Modelfile</a>
+				</li>
+				<li ng-class="{active: filterSet('App')}">
+					<a href ng-click="setFilter('App')">App</a>
+				</li>
+				<li ng-class="{active: filterSet('Account')}">
+					<a href ng-click="setFilter('Account')">Account</a>
+				</li>
 			</ul>
+		</div>
+
+		<div ng-repeat="featuredItem in featuredItems | filter: getFilter()" class="col-md-4 featured">
+			<h3>{{featuredItem.name}}</h3>
+			<div class="row">
+				<img class="profilePic" ng-src="{{featuredItem.profileImg}}">
+				<p class="user">{{featuredItem.username}} - <span>{{featuredItem.publishDate | date}}</span></p>
+			</div>
+			<img ng-src="{{featuredItem.images[0]}}">
+			<p>Type: {{featuredItem.type}}</p>
+			<p>Tags:</p>
+			<div class="col-md-4" ng-repeat="tag in featuredItem.tags">
+				<p class="tag">{{tag}}</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- PREVIOUS FEATURED ITEM -->
+	<div ng-show="isSet(2)">
+		<h3>Previously Featured Items</h3>
+		<div class="row">
+			<ul class="nav nav-tabs">
+				<li ng-class="{active: filterSet('')}">
+					<a href ng-click="setFilter('')">All</a>
+				</li>
+				<li ng-class="{active: filterSet('Modelfile')}">
+					<a href ng-click="setFilter('Modelfile')">Modelfile</a>
+				</li>
+				<li ng-class="{active: filterSet('App')}">
+					<a href ng-click="setFilter('App')">App</a>
+				</li>
+				<li ng-class="{active: filterSet('Account')}">
+					<a href ng-click="setFilter('Account')">Account</a>
+				</li>
+			</ul>
+		</div>
+
+		<div ng-repeat="prevItem in prevItems | filter: getFilter()" class="col-md-4 previous">
+			<h3>{{prevItem.name}}</h3>
+			<div class="row">
+				<img class="profilePic" ng-src="{{prevItem.profileImg}}">
+				<p class="user">{{prevItem.username}} - <span>{{prevItem.publishDate | date}}</span></p>
+			</div>
+			<img ng-src="{{prevItem.images[0]}}">
+			<p>Type: {{prevItem.type}}</p>
+			<p>Tags:</p>
+			<div class="col-md-4" ng-repeat="tag in prevItem.tags">
+				<p class="tag">{{tag}}</p>
+			</div>
 		</div>
 	</div>
 
@@ -91,12 +145,15 @@
 			<div class="form-inline">
 				<label>Type</label>
 				<select ng-model="type">
-					<option value="app">App</option>
-					<option value="account">Account</option>
-					<option value="modelfile">Modelfile</option>
+					<option value="App">App</option>
+					<option value="Account">Account</option>
+					<option value="Modelfile">Modelfile</option>
 				</select>
 			</div>
-			<button class="btn btn-primary" type="submit" ng-click="addItem()">Submit</button>
+			<div class="form-inline">
+				<button class="btn btn-primary" type="submit" ng-click="addItem()">Submit</button>
+			</div>
+			
 		</form>
 	</div>
 

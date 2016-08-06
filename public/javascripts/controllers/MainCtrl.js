@@ -28,6 +28,36 @@ angular.module('featuredItems')
 		    
 	    };
 
+	    //FILTER TYPES OF FEATURED ITEMS ----------------------
+	    $scope.filter = '';
+
+	    $scope.setFilter = function(filter) {
+	    	$scope.filter = filter;
+	    }
+
+	    $scope.filterSet = function(filter) {
+	    	return $scope.filter === filter;
+	    }
+
+	    $scope.getFilter = function() {
+	    	switch ($scope.filter) {
+	    		case 'Modelfile':
+	    			return {type: 'Modelfile'};
+    			case 'App':
+    				return {type: 'App'};
+				case 'Account':
+					return {type: 'Account'};
+				default: 
+					return '';
+	    	}
+	    }
+
+	    //PREVIOUSLY FEATURED ITEMS -------------------------
+	    $http.get('/v1/prevfeatured').success(function(data) {
+	    	event.preventDefault();
+			$scope.prevItems = data;
+	    })
+
 	    //ADD NEW FEATURED ITEM ---------------------------------
 		$scope.tags = [];
 		$scope.tag = '';
