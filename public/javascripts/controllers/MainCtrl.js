@@ -1,17 +1,30 @@
 angular.module('featuredItems')
-.controller('MainCtrl', ['$scope', '$http', '$location', '$rootScope', '$state', '$window',
-	function($scope, $http, $location, $rootScope, $state, $window) {
+.controller('MainCtrl', ['$scope', '$http', '$location', '$rootScope', '$state', '$window', '$stateParams',
+	function($scope, $http, $location, $rootScope, $state, $window, $stateParams) {
 
 		//Toggle Tabs
 	    $scope.tab = 1;
 
 	    $scope.setTab = function(newTab){
-	      $scope.tab = newTab;
+			$scope.tab = newTab;
 	    };
 
 	    $scope.isSet = function(tabNum){
-	      return $scope.tab === tabNum;
+			return $scope.tab === tabNum;
 	    };
+
+	    //ADMIN LOGIN POST
+	    $scope.login = function() {
+			$http.post('/login', {
+				username: $scope.username,
+				password: $scope.password
+			})
+			.success(function(data) {
+				if (data.message === 'logged in') {
+					$location.path('/admin');
+				}
+			});
+	    }
 
 	    //FEATURED ITEMS VIEW -----------------------------
 	    $http.get('/v1/featured').success(function(data) {

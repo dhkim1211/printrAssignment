@@ -5,9 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-
 var app = express();
 
 var dbConfig = require('./models/db.js');
@@ -15,11 +12,22 @@ var mongoose = require('mongoose');
 //connect to db
 mongoose.connect(dbConfig.url);
 
+// Configuring Passport
+var passport = require('passport');
+var expressSession = require('express-session');
+app.use(expressSession({secret: 'mySecretKey'}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// init passport
+var initPassport = require('./passport/init');
+initPassport(passport);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-var routes = require('./routes/index');
+var routes = require('./routes/index')(passport);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -30,7 +38,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
 
 
 

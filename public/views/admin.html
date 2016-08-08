@@ -1,0 +1,138 @@
+<div ng-controller="MainCtrl">
+	<nav class="row">
+		<ul class="nav nav-tabs">
+			<li ng-class="{active: isSet(1)}">
+				<a href ng-click="setTab(1)">Active</a>
+			</li>
+			<li ng-class="{active: isSet(2)}">
+				<a href ng-click="setTab(2)">Previous</a>
+			</li>
+			<li ng-class="{active: isSet(3)}">
+				<a href ng-click="setTab(3)">Add</a>
+			</li>
+			<li>
+				<a ui-sref="logout">Logout</a>
+			</li>
+		</ul>
+	</nav>
+
+	<!-- FEATURED ITEMS PAGE -->
+	<div class="featuredItems" ng-show="isSet(1)">
+		<h3>Featured Items</h3>
+		<div class="row">
+			<ul class="nav nav-tabs">
+				<li ng-class="{active: filterSet('')}">
+					<a href ng-click="setFilter('')">All</a>
+				</li>
+				<li ng-class="{active: filterSet('Modelfile')}">
+					<a href ng-click="setFilter('Modelfile')">Modelfile</a>
+				</li>
+				<li ng-class="{active: filterSet('App')}">
+					<a href ng-click="setFilter('App')">App</a>
+				</li>
+				<li ng-class="{active: filterSet('Account')}">
+					<a href ng-click="setFilter('Account')">Account</a>
+				</li>
+			</ul>
+		</div>
+
+		<div ng-repeat="featuredItem in featuredItems | filter: getFilter()" class="col-md-4 featured">
+			<h3><a ui-sref="edit({id: featuredItem._id})">{{featuredItem.name}}</a></h3>
+			<div class="row">
+				<img class="profilePic" ng-src="{{featuredItem.profileImg}}">
+				<p class="user">{{featuredItem.username}} - <span>{{featuredItem.publishDate | date}}</span></p>
+			</div>
+			<img class="image" ng-src="{{featuredItem.images[0]}}">
+			<p>Type: {{featuredItem.type}}</p>
+			<p>Tags:</p>
+			<div class="col-md-4" ng-repeat="tag in featuredItem.tags">
+				<p class="tag">{{tag}}</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- PREVIOUS FEATURED ITEM -->
+	<div ng-show="isSet(2)">
+		<h3>Previously Featured Items</h3>
+		<div class="row">
+			<ul class="nav nav-tabs">
+				<li ng-class="{active: filterSet('')}">
+					<a href ng-click="setFilter('')">All</a>
+				</li>
+				<li ng-class="{active: filterSet('Modelfile')}">
+					<a href ng-click="setFilter('Modelfile')">Modelfile</a>
+				</li>
+				<li ng-class="{active: filterSet('App')}">
+					<a href ng-click="setFilter('App')">App</a>
+				</li>
+				<li ng-class="{active: filterSet('Account')}">
+					<a href ng-click="setFilter('Account')">Account</a>
+				</li>
+			</ul>
+		</div>
+
+		<div ng-repeat="prevItem in prevItems | filter: getFilter()" class="col-md-4 previous">
+			<h3>{{prevItem.name}}</h3>
+			<div class="row">
+				<img class="profilePic" ng-src="{{prevItem.profileImg}}">
+				<p class="user">{{prevItem.username}} - <span>{{prevItem.publishDate | date}}</span></p>
+			</div>
+			<img ng-src="{{prevItem.images[0]}}">
+			<p>Type: {{prevItem.type}}</p>
+			<p>Tags:</p>
+			<div class="col-md-4" ng-repeat="tag in prevItem.tags">
+				<p class="tag">{{tag}}</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- ADD FEATURED ITEM -->
+	<div class="addItem col-sm-12 col-md-8" ng-show="isSet(3)">
+		<h3>Add Featured Item</h3>
+		<form>
+			<div class="form-inline">
+				<label for="name">Name</label>
+				<input type="text" class="form-control" placeholder="Name", ng-model="name">
+			</div>
+			<div class="form-inline">
+				<label for="username">Username</label>
+				<input type="text" class="form-control" placeholder="Username", ng-model="username">
+			</div>
+			<div class="form-inline">
+				<label for="name">Profile Image</label>
+				<input type="text" class="form-control" placeholder="Profile Image URL", ng-model="profileImg">
+			</div>
+			<div class="form-inline">
+				<label for="name">Publish Date</label>
+				<input type="date" class="form-control" placeholder="Publish Date", ng-model="publishDate">
+			</div>
+			<div class="form-inline">
+				<label for="name">Images</label>
+				<input type="text" class="form-control" placeholder="Image URL", ng-model="singleImage">
+				<button class="btn" ng-click="addImage()">Add</button>
+				<div ng-repeat="image in images">
+					<img ng-src="{{image}}">
+				</div>
+				
+			</div>
+			<div class="form-inline">
+				<label for="name">Tags</label>
+				<input type="text" class="form-control" placeholder="Tags", ng-model="tag">
+				<button class="btn" ng-click="addTag()">Add</button>
+				<p id="tags" ng-repeat="tag in tags">{{tag}}</p>
+			</div>
+			<div class="form-inline">
+				<label>Type</label>
+				<select ng-model="type">
+					<option value="App">App</option>
+					<option value="Account">Account</option>
+					<option value="Modelfile">Modelfile</option>
+				</select>
+			</div>
+			<div class="form-inline">
+				<button class="btn btn-primary" type="submit" ng-click="addItem()">Submit</button>
+			</div>
+			
+		</form>
+	</div>
+</div>

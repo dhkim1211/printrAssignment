@@ -1,0 +1,63 @@
+<div class="backbtn">
+	<button class="btn btn-default back"><a ui-sref="admin">Back</a></button>
+</div>
+<div class="addItem col-sm-12 col-md-8" ng-controller="EditCtrl">
+	<h3>Edit Featured Item: </h3>
+	<form>
+		<div class="form-inline">
+			<label for="name">Name</label>
+			<input type="text" class="form-control" placeholder="{{item.name}}", ng-model="name">
+			<label>{{item.name}}</label>
+		</div>
+		<div class="form-inline">
+			<label for="username">Username</label>
+			<input type="text" class="form-control" placeholder="{{item.username}}", ng-model="username">
+			<label>{{item.username}}</label>
+		</div>
+		<div class="form-inline">
+			<label for="name">Profile Image</label>
+			<input type="text" class="form-control" placeholder="{{item.profileImg}}", ng-model="profileImg">
+			<img class="profilePicEdit" ng-src="{{item.profileImg}}">
+		</div>
+		<div class="form-inline">
+			<label for="name">Publish Date</label>
+			<input type="date" class="form-control" placeholder="{{item.publishDate | date}}", ng-model="publishDate">
+			<label>{{item.publishDate | date}}</p>
+		</div>
+		<div class="form-inline">
+			<label for="name">Images</label>
+			<input type="text" class="form-control" placeholder="{{item.imageUrl}}", ng-model="singleImage">
+			<button class="btn" ng-click="addImage()">Add</button>
+			<div ng-repeat="image in item.images">
+				<img class="itemImage" ng-src="{{image}}">
+			</div>
+			
+		</div>
+		<div class="form-inline">
+			<label for="name">Tags</label>
+			<input type="text" class="form-control" placeholder="Tags", ng-model="tag">
+			<button class="btn" ng-click="addTag()">Add</button>
+			<p id="tags" ng-repeat="tag in item.tags">{{tag}}</p>
+		</div>
+		<div class="form-inline">
+			<label>Type</label>
+			<select ng-model="type" placeholder="{{item.type}}">
+				<option value="App">App</option>
+				<option value="Account">Account</option>
+				<option value="Modelfile">Modelfile</option>
+			</select>
+			<label>{{item.type}}</label>
+		</div>
+		<div class="form-inline">
+			<label>Active</label>
+			<select ng-model="type" placeholder="{{item.type}}">
+				<option value="true">Active</option>
+				<option value="false">Not Active</option>
+			</select>
+		</div>
+		<div class="form-inline">
+			<button class="btn btn-primary" type="submit" ng-click="addItem()">Submit</button>
+		</div>
+		
+	</form>
+</div>
